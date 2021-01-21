@@ -19,10 +19,10 @@ The implementation is much more focussed on performance and efficient computatio
 - 3D Wake
 - Always reduced interaction
 - r only calculated for OPs if needed
-- Matured pointer structure
- - Ensembles point to turbines
- - Turbines point to chains
- - Chains point to OPs
+- Matured pointer structure:
+  - Ensembles point to turbines
+  - Turbines point to chains
+  - Chains point to OPs
 - Decrease of redundant information
 - Design has parallelization in mind from the start
 
