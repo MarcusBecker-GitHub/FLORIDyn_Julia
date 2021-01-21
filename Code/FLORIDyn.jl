@@ -5,7 +5,33 @@
 #   - OPs have wind field as states as well as the four coordinates
 #   - Ensemble Kalman Filter design
 #   - Better storage management
+include("./FLORIDynStructs.jl")
+include("./UtilityFunctions.jl")
 
+using Main.FLORIDyn_Structs
+using Main.FLORIDyn_UtilityFunctions
+# Number of ensembles
+nE  = 1;
+# Number of turbines / ensemble
+nT  = 3; # TODO Load layout and extract number of turbines
+# Number of chains / turbine
+nC  = 50;
+# Number of OPs/ chain
+nOP = 100;
+
+op = OP(
+    zeros(nE*nT*nC*nOP),    # x
+    zeros(nE*nT*nC*nOP),    # y
+    zeros(nE*nT*nC*nOP),    # z
+    zeros(nE*nT*nC*nOP),    # x1
+    zeros(nE*nT*nC*nOP),    # y1
+    zeros(nE*nT*nC*nOP),    # u
+    zeros(nE*nT*nC*nOP),    # φ
+    zeros(nE*nT*nC*nOP),    # i0
+    zeros(nE*nT*nC),        # pntr_c2op
+    zeros(nC),              # c_w
+    zeros(nC),              # c_νy
+    zeros(nC));             # c_νz
 # Init layout
 
 # Init state arrays
@@ -45,28 +71,4 @@ function FLORIDyn(x_u, x_ϕ, x_i, timesteps)
         # Shift and init corrected states (u, φ, i)
 
     end
-end
-
-a1 = 3
-a2 = [1,2,3]
-
-function f1(x)
-    x = x + 1
-end
-
-function f2(x)
-    x[1] = x[1]+1
-end
-
-f1(a1);
-f2(a2);
-print(a1,a2)
-
-function circleshift!(a::AbstractVector, shift::Integer)
-    n = length(a)
-    s = mod(shift, n)
-    s == 0 && return a
-    reverse!(a, 1, s)
-    reverse!(a, s+1, n)
-    reverse!(a)
 end

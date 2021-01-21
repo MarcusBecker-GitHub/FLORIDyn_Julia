@@ -1,5 +1,6 @@
 # Structs for FLORIDyn
-
+module FLORIDyn_Structs
+export OP, T, E, Sim, Control
 # OPs
 struct OP
     # World coordinates
@@ -43,6 +44,9 @@ struct T
     pntr_t2c  # Pointer to first chain of each turbine
 end
 
+struct E
+    pntr_e2t    # Pointer from the ensembles to the turbines
+end
 # Simulation data
 struct Sim
     # Time
@@ -62,3 +66,5 @@ struct Control
     type :: String  # Name of control strategy
     init :: Bool    # Initialize values or not
 end
+
+end  # module FLORIDyn_Structs
