@@ -7,9 +7,12 @@
 #   - Better storage management
 include("./FLORIDynStructs.jl")
 include("./UtilityFunctions.jl")
+include("./InitStructs.jl")
+
 
 using Main.FLORIDyn_Structs
 using Main.FLORIDyn_UtilityFunctions
+using Main.FLORIDyn_InitStructs
 # Number of ensembles
 nE  = 1;
 # Number of turbines / ensemble
@@ -19,19 +22,12 @@ nC  = 50;
 # Number of OPs/ chain
 nOP = 100;
 
-op = OP(
-    zeros(nE*nT*nC*nOP),    # x
-    zeros(nE*nT*nC*nOP),    # y
-    zeros(nE*nT*nC*nOP),    # z
-    zeros(nE*nT*nC*nOP),    # x1
-    zeros(nE*nT*nC*nOP),    # y1
-    zeros(nE*nT*nC*nOP),    # u
-    zeros(nE*nT*nC*nOP),    # φ
-    zeros(nE*nT*nC*nOP),    # i0
-    zeros(nE*nT*nC),        # pntr_c2op
-    zeros(nC),              # c_w
-    zeros(nC),              # c_νy
-    zeros(nC));             # c_νz
+t   = allocTurbineStruct("3T_FarmConners",nE,nC,nOP);
+op  = allocOPStruct(nE,nT,nC,nOP);
+e   = allocEnsembleStruct(nE);
+sim = allocSimStruct();
+con = allocControl();
+
 # Init layout
 
 # Init state arrays
