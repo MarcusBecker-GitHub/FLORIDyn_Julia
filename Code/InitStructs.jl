@@ -148,6 +148,7 @@ function allocEnsembleStruct(nE)
     return e
 end
 
+#=
 function allocSimStruct()
     sim = Sim(
         0.0,    # t_end
@@ -163,6 +164,7 @@ function allocControl()
     control = Control("",false);
     return control
 end
+=#
 # Ct(λ,β) & Cp(λ,β) look up tables
 
 

@@ -22,26 +22,24 @@ nC  = 50;
 # Number of OPs/ chain
 nOP = 100;
 
-t   = allocTurbineStruct("3T_FarmConners",nE,nC,nOP);
-op  = allocOPStruct(nE,nT,nC,nOP);
+# Init ensemble pointer
 e   = allocEnsembleStruct(nE);
-sim = allocSimStruct();
-con = allocControl();
+# Init layout & turbine states
+t   = allocTurbineStruct("3T_FarmConners",nE,nC,nOP);
+# Init observation point states
+op  = allocOPStruct(nE,nT,nC,nOP);
+# Init Simulation & control struct
+sim = Sim(
+    0.0,    # t_end
+    0.0,    # Δt
+    0,      # nt
+    0.0,    # w
+    0.0,    # ρ
+    0.0);   # α_s
+con = Control("Axial induction",true);
 
-# Init layout
-
-# Init state arrays
-#   Turbine
-
-#   OPs
-
-# Init Control strategy
-
-# Assembly of lists and states
-timesteps = 1000;
-
-function FLORIDyn(x_u, x_ϕ, x_i, timesteps)
-    for k ∈ 1:timesteps
+function FLORIDyn(e,t,op,sim,con)
+    for k ∈ 1:sim.nt
         # Calculate variables based on non-correcting states (x,y,z,dw,CT,γ)
         #   Wake shape
 
