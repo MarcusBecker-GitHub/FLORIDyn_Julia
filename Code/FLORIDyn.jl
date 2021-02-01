@@ -23,7 +23,7 @@ nC  = 50;
 nOP = 100;
 
 # Init ensemble pointer
-e   = allocEnsembleStruct(nE);
+e   = allocEnsembleStruct(nE,nT,nC);
 # Init layout & turbine states
 t   = allocTurbineStruct("3T_FarmConners",nE,nC,nOP);
 # Init observation point states

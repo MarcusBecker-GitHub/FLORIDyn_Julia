@@ -4,7 +4,7 @@ include("./FLORIDynStructs.jl")
 using Main.FLORIDyn_Structs
 
 export allocTurbineStruct, allocOPStruct, allocEnsembleStruct
-export allocSimStruct, allocControl
+export allocChainStruct
 
 #= Module to store turbine related data such as layouts, size and efficency.  =#
 # Layouts (x1, y1, x2, y2, ...)
@@ -36,7 +36,8 @@ function allocTurbineStruct(layout::String,nE::Integer,nC::Integer,nOP::Integer)
             zeros(nOP*nT),      # Ct
             zeros(nOP*nT),      # γ
             zeros(nT),          # Cp
-            zeros(nT));         # Pointer to first chain of each turbine
+            # Pointer to first chain of each turbine
+            1:nC:(nE*nT*nC-nC+1));
         return t
     elseif isequal(layout,"3T_FarmConners")
         nT = 3;
@@ -50,7 +51,8 @@ function allocTurbineStruct(layout::String,nE::Integer,nC::Integer,nOP::Integer)
             zeros(nOP*nT),          # Ct
             zeros(nOP*nT),          # γ
             zeros(nT),              # Cp
-            zeros(nT));             # Pointer to first chain of each turbine
+            # Pointer to first chain of each turbine
+            1:nC:(nE*nT*nC-nC+1));
         return t
     elseif isequal(layout,"9T_FarmConner")
         nT = 9;
@@ -64,7 +66,8 @@ function allocTurbineStruct(layout::String,nE::Integer,nC::Integer,nOP::Integer)
             zeros(nOP*nT),          # Ct
             zeros(nOP*nT),          # γ
             zeros(nT),              # Cp
-            zeros(nT));             # Pointer to first chain of each turbine
+            # Pointer to first chain of each turbine
+            1:nC:(nE*nT*nC-nC+1));
         return t
     elseif isequal(layout,"1T_DTU10MW")
         nT = 2;
@@ -78,7 +81,8 @@ function allocTurbineStruct(layout::String,nE::Integer,nC::Integer,nOP::Integer)
             zeros(nOP*nT),          # Ct
             zeros(nOP*nT),          # γ
             zeros(nT),              # Cp
-            zeros(nT));             # Pointer to first chain of each turbine
+            # Pointer to first chain of each turbine
+            1:nC:(nE*nT*nC-nC+1));
         return t
     elseif isequal(layout,"2T_DTU10MW")
         nT = 2;
@@ -92,7 +96,8 @@ function allocTurbineStruct(layout::String,nE::Integer,nC::Integer,nOP::Integer)
             zeros(nOP*nT),          # Ct
             zeros(nOP*nT),          # γ
             zeros(nT),              # Cp
-            zeros(nT));             # Pointer to first chain of each turbine
+            # Pointer to first chain of each turbine
+            1:nC:(nE*nT*nC-nC+1));
         return t
     elseif isequal(layout,"3T_DTU10MW")
         nT = 3;
@@ -106,7 +111,8 @@ function allocTurbineStruct(layout::String,nE::Integer,nC::Integer,nOP::Integer)
             zeros(nOP*nT),          # Ct
             zeros(nOP*nT),          # γ
             zeros(nT),              # Cp
-            zeros(nT));             # Pointer to first chain of each turbine
+            # Pointer to first chain of each turbine
+            1:nC:(nE*nT*nC-nC+1));
         return t
     elseif isequal(layout,"9T_DTU10MW")
         nT = 9;
@@ -120,7 +126,8 @@ function allocTurbineStruct(layout::String,nE::Integer,nC::Integer,nOP::Integer)
             zeros(nOP*nT),          # Ct
             zeros(nOP*nT),          # γ
             zeros(nT),              # Cp
-            zeros(nT));             # Pointer to first chain of each turbine
+            # Pointer to first chain of each turbine
+            1:nC:(nE*nT*nC-nC+1));
         return t
     end
     return -1;
@@ -135,16 +142,22 @@ function allocOPStruct(nE,nT,nC,nOP)
         zeros(nE*nT*nC*nOP),    # y1
         zeros(nE*nT*nC*nOP),    # u
         zeros(nE*nT*nC*nOP),    # φ
-        zeros(nE*nT*nC*nOP),    # i0
-        zeros(nE*nT*nC),        # pntr_c2op
-        zeros(nC),              # c_w
-        zeros(nC),              # c_νy
-        zeros(nC));             # c_νz
+        zeros(nE*nT*nC*nOP));    # i0
     return op
 end
 
-function allocEnsembleStruct(nE)
-    e = E(zeros(nE));
+function allocChainStruct(nE,nT,nC,nOP)
+    c = C(
+        zeros(nC),              # c_w
+        zeros(nC),              # c_νy
+        zeros(nC),              # c_νz
+        1:nOP:(nE*nT*nC*nOP-nOP+1) # pntr_c2op
+    );
+    return c
+end
+
+function allocEnsembleStruct(nE,nT,nC)
+    e = E(1:nT*nC:(nE-1)*nT*nC+1);
     return e
 end
 

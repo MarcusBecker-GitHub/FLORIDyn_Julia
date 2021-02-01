@@ -17,14 +17,34 @@ struct OP
     u   # Wind speed
     ϕ   # Wind direction
     i0  # Ambient turbulence intensity
+end
 
-    # Chains
-    pntr_c2op  # Pointer to the chain start in the OP arrays
+struct C
     c_w     # Weights of the chain / relative area
     c_νy    # Relative y position in wake coordinates
     c_νz    # Relative z position in wake coordinates
-end
 
+    # Pointer to the chain start in the OP arrays
+    #   E1:
+    #       t1:
+    #           c1->OP1
+    #           c2->OP1
+    #           c2->OP1
+    #       t2:
+    #           c1->OP1
+    #           c2->OP1
+    #           c2->OP1
+    #   E2:
+    #       t1:
+    #           c1->OP1
+    #           c2->OP1
+    #           c2->OP1
+    #       t2:
+    #           c1->OP1
+    #           c2->OP1
+    #           c2->OP1
+    pntr_c2op 
+end
 # Turbines
 struct T
     # Constants
@@ -40,12 +60,23 @@ struct T
     γ   # yaw angle
     Cp  # Power coefficient
 
-    # Pointer
-    pntr_t2c  # Pointer to first chain of each turbine
+    # Pointer to chain
+    #   E1:
+    #       t1->c1
+    #       t2->c1
+    #       t3->c1
+    #   E2:
+    #       t1->c1
+    #       t2->c1
+    #       t3->c1
+    pntr_t2c
 end
 
 struct E
-    pntr_e2t    # Pointer from the ensembles to the turbines
+     # Pointer from the ensembles to the first turbine of the ensemble
+     # E1 -> T1,C1
+     # E2 -> T1,C1
+    pntr_e2c
 end
 # Simulation data
 struct Sim
