@@ -96,7 +96,28 @@ function InitEnsemble(layout,nC,nOP)
 end
 
 function generateChainConstants(nC)
-    body
+    # Sunflower distribution to generate relative distribution and
+    cConst = zeros(nC,3);
+    α = 2.0;
+    if α>sqrt(nC)
+        error("Too frew chains, need to be at least $(ceil(sqrt(nC))) chains")
+    end
+    b = Int64(round(α*sqrt(nC)));
+    Φ = (sqrt(5)+1)/2;
+    k = collect(1:nC);
+    r = ones(nC);
+
+    r[1:nC-b] = sqrt.(k[1:nC-b].-0.5)./sqrt(nC-(b+1)/2);
+    θ = 2*π.*k./Φ^2;
+
+    cConst[:,2] = r.*0.5.*cos(θ);
+    cConst[:,3] = r.*0.5.*sin(θ);
+
+    # Caluclate relative area each chain is representing
+    # TODO temp. fix, original based on voronoi
+    cConst[:,1] = ones(nC)./nC;
+
+    return cConst
 end
 
 end  # module FLORIDyn_InitStructs
