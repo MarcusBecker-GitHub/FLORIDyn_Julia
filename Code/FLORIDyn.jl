@@ -23,7 +23,11 @@ nOP = 100;
 # Init Ensembles, Control settings and simulation settings
 e   = InitEnsemble("3T_DTU10MW",nC,nOP);
 con = Control("Axial induction",true);
-sim = Sim(1000.0, 4.0, length(0:4:1000), 6, 1.225, 0.1);
+sim = Sim(1000.0, 4.0, length(0:4:1000), 6, 1.225, 0.1, length(e.turb),nC,nOP));
+
+if con.init
+    initStates!(e,u,ϕ,I0,sim);
+end
 
 function FLORIDyn(e,t,op,sim,con)
     for k ∈ 1:sim.nt

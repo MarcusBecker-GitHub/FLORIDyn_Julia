@@ -65,6 +65,11 @@ struct Sim
     # Environment
     ρ       # Air density
     α_s     # Shear coefficient (Atmospheric stability, Power law)
+
+    # Settings Ensemble
+    nT
+    nC
+    nOP
 end
 
 end  # module FLORIDyn_Structs
