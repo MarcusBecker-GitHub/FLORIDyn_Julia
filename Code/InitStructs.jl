@@ -3,8 +3,7 @@ module FLORIDyn_InitStructs
 include("./FLORIDynStructs.jl")
 using Main.FLORIDyn_Structs
 
-export allocTurbineStruct, allocOPStruct, allocEnsembleStruct
-export allocChainStruct
+export InitEnsemble
 
 #= Module to store turbine related data such as layouts, size and efficency.  =#
 # Layouts (x1, y1, x2, y2, ...)
@@ -58,7 +57,7 @@ function InitEnsemble(layout,nC,nOP)
     end
 
     #   determine nT
-    nT = length(lyt)
+    nT = length(lyt[1:2:end]);
     #   Create turbine array
     turbines = [];
     for iT = 1:nT
@@ -71,15 +70,14 @@ function InitEnsemble(layout,nC,nOP)
                 zeros(nOP), # Ct
                 zeros(nOP), # γ
                 zeros(1),   # Cp
-                zeros(nOP,nC) # op_x
-                zeros(nOP,nC) # op_y
-                zeros(nOP,nC) # op_z
-                zeros(nOP,nC) # op_x1
-                zeros(nOP,nC) # op_y1
-                zeros(nOP,nC) # op_u
-                zeros(nOP,nC) # op_φ
-                zeros(nOP,nC) # op_I0
-            );
+                zeros(nOP,nC), # op_x
+                zeros(nOP,nC), # op_y
+                zeros(nOP,nC), # op_z
+                zeros(nOP,nC), # op_x1
+                zeros(nOP,nC), # op_y1
+                zeros(nOP,nC), # op_u
+                zeros(nOP,nC), # op_φ
+                zeros(nOP,nC))); # op_I0
     end
 
     cConst = generateChainConstants(nC);
@@ -91,7 +89,7 @@ function InitEnsemble(layout,nC,nOP)
             cConst[:,2],    # c_νy
             cConst[:,3]);   # c_νz
     # Init E
-    e = Ensemble(turbines);
+    e = Ensemble(turbines,cnst);
     return e;
 end
 
@@ -110,8 +108,8 @@ function generateChainConstants(nC)
     r[1:nC-b] = sqrt.(k[1:nC-b].-0.5)./sqrt(nC-(b+1)/2);
     θ = 2*π.*k./Φ^2;
 
-    cConst[:,2] = r.*0.5.*cos(θ);
-    cConst[:,3] = r.*0.5.*sin(θ);
+    cConst[:,2] = r.*0.5.*cos.(θ);
+    cConst[:,3] = r.*0.5.*sin.(θ);
 
     # Caluclate relative area each chain is representing
     # TODO temp. fix, original based on voronoi

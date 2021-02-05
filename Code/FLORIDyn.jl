@@ -15,28 +15,15 @@ using Main.FLORIDyn_UtilityFunctions
 using Main.FLORIDyn_InitStructs
 # Number of ensembles
 nE  = 1;
-# Number of turbines / ensemble
-nT  = 3; # TODO Load layout and extract number of turbines
 # Number of chains / turbine
 nC  = 50;
 # Number of OPs/ chain
 nOP = 100;
 
-# Init ensemble pointer
-e   = allocEnsembleStruct(nE,nT,nC);
-# Init layout & turbine states
-t   = allocTurbineStruct("3T_FarmConners",nE,nC,nOP);
-# Init observation point states
-op  = allocOPStruct(nE,nT,nC,nOP);
-# Init Simulation & control struct
-sim = Sim(
-    0.0,    # t_end
-    0.0,    # Δt
-    0,      # nt
-    0.0,    # w
-    0.0,    # ρ
-    0.0);   # α_s
+# Init Ensembles, Control settings and simulation settings
+e   = InitEnsemble("3T_DTU10MW",nC,nOP);
 con = Control("Axial induction",true);
+sim = Sim(1000.0, 4.0, length(0:4:1000), 6, 1.225, 0.1);
 
 function FLORIDyn(e,t,op,sim,con)
     for k ∈ 1:sim.nt

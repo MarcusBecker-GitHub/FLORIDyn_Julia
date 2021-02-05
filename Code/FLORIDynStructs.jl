@@ -1,6 +1,6 @@
 # Structs for FLORIDyn
 module FLORIDyn_Structs
-export Ensemble, Turbine
+export Ensemble, Turbine, Constants, Control, Sim
 
 # Ensembles contain simulation variables
 
@@ -46,6 +46,25 @@ struct Turbine
     op_u    # [nOP x nC]
     op_ϕ    # [nOP x nC]
     op_I0   # [nOP x nC]
+end
+
+struct Control
+    type :: String  # Name of control strategy
+    init :: Bool    # Initialize values or not
+end
+
+struct Sim
+    # Time
+    t_end   # Duration
+    Δt      # Timestep duration
+    nt      # Number of timesteps
+
+    # Gaussian Wake Model
+    w       # WidthFactor
+
+    # Environment
+    ρ       # Air density
+    α_s     # Shear coefficient (Atmospheric stability, Power law)
 end
 
 end  # module FLORIDyn_Structs
