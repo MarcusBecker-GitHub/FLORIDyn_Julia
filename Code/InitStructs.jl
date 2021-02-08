@@ -3,7 +3,7 @@ module FLORIDyn_InitStructs
 include("./FLORIDynStructs.jl")
 using Main.FLORIDyn_Structs
 
-export InitEnsemble initStates!
+export InitEnsemble, initStates!
 
 #= Module to store turbine related data such as layouts, size and efficency.  =#
 # Layouts (x1, y1, x2, y2, ...)
@@ -118,7 +118,7 @@ function generateChainConstants(nC)
     return cConst
 end
 
-function initStates!(e,sim,con,u,ϕ,I0,Ct,γ,Cp)
+function initStates!(e,sim,u,ϕ,I0,Ct,γ,Cp)
     for t ∈ e.turb
         # Turbine states
         t.Ct .= Ct;
@@ -133,8 +133,8 @@ function initStates!(e,sim,con,u,ϕ,I0,Ct,γ,Cp)
         # Set coordinates for OP coordinate states
         for c = 1:sim.nC, x = 1:sim.nOP
             x1 = x*u*sim.Δt;
-            y1 = con.t_D[t.ttype]*con.c_νy[c];
-            z1 = con.t_D[t.ttype]*con.c_νz[c];
+            y1 = e.constants.t_D[t.ttype]*e.constants.c_νy[c];
+            z1 = e.constants.t_D[t.ttype]*e.constants.c_νz[c];
             t.op_x[x,c]  = cos(ϕ)*x1 + sin(ϕ)*y1 + t.x;
             t.op_x1[x,c] = x1;
             t.op_y[x,c]  = -sin(ϕ)*x1 + cos(ϕ)*y1 + t.y;
