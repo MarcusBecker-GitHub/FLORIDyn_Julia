@@ -1,6 +1,5 @@
 # Stored Data
 module FLORIDyn_InitStructs
-include("./FLORIDynStructs.jl")
 using Main.FLORIDyn_Structs
 
 export InitEnsemble, initStates!
@@ -141,8 +140,6 @@ function initStates!(e,sim,u,ϕ,I0,Ct,γ,Cp)
             t.op_y1[x,c] = y1;
             t.op_z[x,c]  = z1;
         end
-
-
     end
 end
 end  # module FLORIDyn_InitStructs

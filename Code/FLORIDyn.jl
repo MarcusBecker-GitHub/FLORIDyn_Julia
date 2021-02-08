@@ -39,27 +39,30 @@ function FLORIDyn(e,t,op,sim,con)
     for k ∈ 1:sim.nt
         # Calculate variables based on non-correcting states (x,y,z,dw,CT,γ)
         #   Wake shape
-
+        # TODO
         #   Reduction
-
+        # TODO
         #   Foreign reduction
-
+        #       Idea: use first chain (center) to get rough index where to look
+        #       look for closest OPs
+        #   LAST THING TO IMPLEMENT
+        # TODO
         # Correction with EnKF
         #   use current data to correct states (u, φ, i)
-
+        # TODO
         # Calculate output variables
         # P / effective wind speed
-
+        # TODO
         # ==================================================================== #
         #                  PREDICTION FOR THE FOLLOWING TIMESTEP               #
 
         # Calculate step in wake coordinates
-
+        # TODO
         #   apply in world coordinates
-
+        # TODO
         #   shift & init non-correcting states (x,y,z,dw,CT,γ)
         #       apply sunflower distribution
         # Shift and init corrected states (u, φ, i)
-
+        # TODO
     end
 end
