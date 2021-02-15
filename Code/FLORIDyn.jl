@@ -56,10 +56,26 @@ function FLORIDyn(e,t,op,sim,con)
         # ==================================================================== #
         #                  PREDICTION FOR THE FOLLOWING TIMESTEP               #
 
-        # Calculate step in wake coordinates
-        # TODO
-        #   apply in world coordinates
-        # TODO
+        for t ∈ e.turb
+            # Go through all OPs backwards and overwrite the following entry
+            for i_c ∈ 1:size(t.op_x,2), i_op ∈ size(t.op_x,1)-1:-1:1
+                # Update of the wake coordinates
+                Δx1 = sim.Δt*t.op_u[i_op,i_c];
+                Δy1 = crosswindstep!(Δx1,x1,y1,z,Ct,γ,ν_y,ν_z,D,w);
+
+                # Update of the world coordinates
+                t.op_x[i_op + 1,i_c] = t.op_x[i_op,i_c] +
+                                        cos(t.op_ϕ)*Δx1 + sin(t.op_ϕ)*Δy1;
+                t.op_y[i_op + 1,i_c] = t.op_y[i_op,i_c] +
+                                        -sin(t.op_ϕ)*Δx1 + cos(t.op_ϕ)*Δy1;
+
+                # Shitft the states
+                t.op_ϕ[i_op + 1,i_c]  = t.op_ϕ[i_op,i_c];
+                t.op_I0[i_op + 1,i_c] = t.op_I0[i_op,i_c];
+            end
+
+            # Shift turbine states
+        end
         #   shift & init non-correcting states (x,y,z,dw,CT,γ)
         #       apply sunflower distribution
         # Shift and init corrected states (u, φ, i)

@@ -2,6 +2,9 @@
 module FLORIDyn_UtilityFunctions
 export circleshift!
 
+
+# TODO Should be replaced by a version which only shifts down and does not
+# Schange the first entry
 function circleshift!(a::AbstractVector, shift::Integer)
     # True inplace version of circshift!()
     n = length(a)

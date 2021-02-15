@@ -31,7 +31,7 @@ function Θ(Ct,γ)
     return 0.3*γ/cos(γ)*(1-sqrt(1-Ct*cos(γ)));
 end
 # Deflection
-function δ(Θ)
+function δ(Θ,Ct,D,γ,x1,xc,σ_y,σ_z,k_y,k_z)
     # Near field
     δ_nfw  = Θ*min(x1,xc);
     # Far field
@@ -39,5 +39,16 @@ function δ(Θ)
     δ_ff_2 = log((1.6+sqrt(Ct))*(1.6*sqrt((8*σ_y*σ_z)/(D^2*cos(γ)))-sqrt(Ct))/
                 ((1.6-sqrt(Ct))*(1.6*sqrt((8*σ_y*σ_z)/(D^2*cos(γ)))+sqrt(Ct))));
     return δ_nfw + (sign(x1-xc)/2.0+0.5)*δ_ff_1*δ_ff_2*D;
+end
+
+# Calculate crosswind step
+function crosswindstep!(Δx1,x1,y1,z,Ct,γ,ν_y,ν_z,D,w)
+    #   change x1,y1,z and return Δy1 which will be applied to the real world
+    #   coordinates
+    # Calculate the new σ_y, σ_z of the new down wind position
+
+    # Calculate crosswind position and change y1, z & Δy1
+    
+    return Δy1
 end
 end  # module GaussianWake

@@ -133,7 +133,7 @@ function initStates!(e,sim,u,ϕ,I0,Ct,γ,Cp)
         for c = 1:sim.nC, x = 1:sim.nOP
             x1 = x*u*sim.Δt;
             y1 = e.constants.t_D[t.ttype]*e.constants.c_νy[c];
-            z1 = e.constants.t_D[t.ttype]*e.constants.c_νz[c];
+            z1 = e.constants.t_D[t.ttype]*e.constants.c_νz[c]+t.z;
             t.op_x[x,c]  = cos(ϕ)*x1 + sin(ϕ)*y1 + t.x;
             t.op_x1[x,c] = x1;
             t.op_y[x,c]  = -sin(ϕ)*x1 + cos(ϕ)*y1 + t.y;
