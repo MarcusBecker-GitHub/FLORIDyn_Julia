@@ -1,6 +1,6 @@
 # Structs for FLORIDyn
 module FLORIDyn_Structs
-export Ensemble, Turbine, Constants, Control, Sim
+export Ensemble, Turbine, Constants, Control, Sim, FLORISConst
 
 # Ensembles contain simulation variables
 
@@ -18,6 +18,9 @@ struct Constants
     c_w
     c_νy
     c_νz
+
+    # Floris
+    FLORIS
 end
 
 struct Turbine
@@ -72,4 +75,14 @@ struct Sim
     nOP
 end
 
+struct FLORISConst
+    α   :: Float64     # Potential core
+    β   :: Float64     # Potential core
+    k_a :: Float64     # Wake width / Expansion
+    k_b :: Float64     # Wake width / Expansion
+    # Added turbulence
+    k_ia :: Float64    # Overall weight
+    k_ib :: Float64    # Axial induction weight
+    k_ic :: Float64    # Ambient turbulence level weight
+    k_id :: Float64   # Distance to turbine weight
 end  # module FLORIDyn_Structs

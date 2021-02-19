@@ -21,6 +21,7 @@ end
 function σ_y(x1::Float64,xc::Float64,D::Float64,γ::Float64,k_y::Float64)
     return σ_z(x1,xc,D,γ,k_y)*cos(γ);
 end
+
 # Expansion factor for the wake width
 function k_y(k_a::Float64,k_b::Float64,I::Float64)
     return k_a*I + k_b;
@@ -30,6 +31,7 @@ end
 function Θ(Ct,γ)
     return 0.3*γ/cos(γ)*(1-sqrt(1-Ct*cos(γ)));
 end
+
 # Deflection
 function δ(Θ,Ct,D,γ,x1,xc,σ_y,σ_z,k_y,k_z)
     # Near field
@@ -41,6 +43,20 @@ function δ(Θ,Ct,D,γ,x1,xc,σ_y,σ_z,k_y,k_z)
     return δ_nfw + (sign(x1-xc)/2.0+0.5)*δ_ff_1*δ_ff_2*D;
 end
 
+# Effective turbulence intensity
+function I_f(Ct,I0,x1,D,k_ia,k_ib,k_ic,k_id)
+    # Convert Ct to a
+    a = 0.5*(1-sqrt(1-Ct));
+    if a<0.0 or a>.5 # Upper bound is an educated guess
+        error("Foreign Turbulence Intensity calcualtion: Ct coefficient out of range for conversion to axial induction factor: a = $a")
+    end
+    return k_ia*a^k_ib*I0^k_ic*(x1/D)^k_id;
+end
+# Effective turbulence intensity
+function eff_I(I0::Float64,I_f::Float64)
+    return sqrt(I_f^2 + I_0^2);
+end
+
 # Calculate crosswind step
 function crosswindstep!(Δx1,x1,y1,z,Ct,γ,ν_y,ν_z,D,w)
     #   change x1,y1,z and return Δy1 which will be applied to the real world
@@ -48,7 +64,12 @@ function crosswindstep!(Δx1,x1,y1,z,Ct,γ,ν_y,ν_z,D,w)
     # Calculate the new σ_y, σ_z of the new down wind position
 
     # Calculate crosswind position and change y1, z & Δy1
-    
+
     return Δy1
+end
+
+function speedAtLocation(args)
+    # Return the speed at a location
+    body
 end
 end  # module GaussianWake

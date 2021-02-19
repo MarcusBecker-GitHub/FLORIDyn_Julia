@@ -86,7 +86,9 @@ function InitEnsemble(layout,nC,nOP)
             turb[4:4:end],  # t_p_p
             cConst[:,1],    # c_w
             cConst[:,2],    # c_νy
-            cConst[:,3]);   # c_νz
+            cConst[:,3],    # c_νz
+            FLORISConst(2.32, 0.154, 0.38371, 0.003678, # FLORIS constants
+                        0.73, 0.8325, 0.0325, -0.32));  # α, ... , k_id 
     # Init E
     e = Ensemble(turbines,cnst);
     return e;
