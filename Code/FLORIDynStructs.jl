@@ -86,4 +86,6 @@ struct FLORISConst
     k_ib :: Float64    # Axial induction weight
     k_ic :: Float64    # Ambient turbulence level weight
     k_id :: Float64   # Distance to turbine weight
+end
+
 end  # module FLORIDyn_Structs

@@ -69,6 +69,7 @@ function InitEnsemble(layout,nC,nOP)
                 zeros(nOP), # Ct
                 zeros(nOP), # γ
                 zeros(1),   # Cp
+                zeros(nOP), # I
                 zeros(nOP,nC), # op_x
                 zeros(nOP,nC), # op_y
                 zeros(nOP,nC), # op_z
@@ -88,7 +89,9 @@ function InitEnsemble(layout,nC,nOP)
             cConst[:,2],    # c_νy
             cConst[:,3],    # c_νz
             FLORISConst(2.32, 0.154, 0.38371, 0.003678, # FLORIS constants
-                        0.73, 0.8325, 0.0325, -0.32));  # α, ... , k_id 
+                        0.73, 0.8325, 0.0325, -0.32));  # α, ... , k_id
+                        # Doekemeijer et al. 2020 Closed loop model based WFC
+                        # 1.088,0.222,0.537,-0.000848, 7.84, 4.57, 0.43, -0.246
     # Init E
     e = Ensemble(turbines,cnst);
     return e;
@@ -125,6 +128,7 @@ function initStates!(e,sim,u,ϕ,I0,Ct,γ,Cp)
         t.Ct .= Ct;
         t.γ  .= γ;
         t.Cp .= Cp;
+        t.I  .= I0;
 
         # Correcting states
         t.op_u  .= u;

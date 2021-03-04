@@ -35,7 +35,7 @@ if con.init
     initStates!(e,sim,u,ϕ,I0,Ct,γ,Cp);
 end
 
-function FLORIDyn(e,t,op,sim,con)
+function FLORIDyn(e,sim,con)
     for k ∈ 1:sim.nt
         # Calculate variables based on non-correcting states (x,y,z,dw,CT,γ)
         #   Wake shape
@@ -81,10 +81,26 @@ function FLORIDyn(e,t,op,sim,con)
             end
 
             # Shift turbine states
+            t.Ct[2:end] = t.Ct[1:end-1];
+            t.γ[2:end]  = t.γ[1:end-1];
+            t.I[2:end]  = t.I[1:end-1];
+
+            # Init non-correcting states (Ct,γ,Cp)
+            a = 1/3;
+            γ = 0;
+            t.Ct[1] = 4*a*(1-a);
+            t.γ[1]  = 0;
+            t.Cp[1] = 4*a*(1-a)^2;
+            #t.I[1]  = t.I[1:end-1];
         end
         #   shift & init non-correcting states (x,y,z,dw,CT,γ)
         #       apply sunflower distribution
         # Shift and init corrected states (u, φ, i)
         # TODO
     end
+    print("Simulation done.")
 end
+
+
+# TODO Check out color package
+# https://github.com/JuliaGraphics/ColorSchemes.jl
