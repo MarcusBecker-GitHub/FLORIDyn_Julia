@@ -8,11 +8,14 @@
 include("./FLORIDynStructs.jl")
 include("./UtilityFunctions.jl")
 include("./InitStructs.jl")
+include("./FLORISGaussianWake.jl")
+
 
 
 using Main.FLORIDyn_Structs
 using Main.FLORIDyn_UtilityFunctions
 using Main.FLORIDyn_InitStructs
+using Main.GaussianWake
 # Number of ensembles
 nE  = 1;
 # Number of chains / turbine
@@ -55,11 +58,7 @@ function FLORIDyn(e,sim,con)
         #   Speed reduction
 
         #   Added turbulence
-        I_f = I_f(Ct,I0,x1,D,
-                    FConst.k_ia,
-                    FConst.k_ib,
-                    FConst.k_ic,
-                    FConst.k_id);
+        #I_f = I_f(Ct,I0,x1,D,FConst.k_ia,FConst.k_ib,FConst.k_ic,FConst.k_id);
         # TODO
         # Correction with EnKF
         #   use current data to correct states (u, φ, i)
@@ -91,10 +90,12 @@ function FLORIDyn(e,sim,con)
 
                 # Update and shift of the world coordinates
                 t.op_x[i_op + 1,i_c] = t.op_x[i_op,i_c] +
-                                        cos(t.op_ϕ)*Δx1 + sin(t.op_ϕ)*Δy1;
+                                        cos(t.op_ϕ[i_op,i_c])*Δx1 +
+                                        sin(t.op_ϕ[i_op,i_c])*Δy1;
                 t.op_y[i_op + 1,i_c] = t.op_y[i_op,i_c] +
-                                        -sin(t.op_ϕ)*Δx1 + cos(t.op_ϕ)*Δy1;
-                t.op_z[i_op + 1,i_c] = t.op_z[i_op,i_c] + Δz;
+                                        -sin(t.op_ϕ[i_op,i_c])*Δx1 +
+                                         cos(t.op_ϕ[i_op,i_c])*Δy1;
+                t.op_z[i_op + 1,i_c] = max(t.op_z[i_op,i_c] + Δz,0);
 
                 # Update and shift of the wake coordinates
                 t.op_x1[i_op + 1,i_c] = t.op_x1[i_op,i_c] + Δx1;
@@ -127,6 +128,7 @@ function FLORIDyn(e,sim,con)
     print("Simulation done.")
 end
 
+FLORIDyn(e,sim,con);
 
 # TODO Check out color package
 # https://github.com/JuliaGraphics/ColorSchemes.jl
