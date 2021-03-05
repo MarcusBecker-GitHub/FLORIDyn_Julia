@@ -61,9 +61,10 @@ function I_f(Ct::Float64,I0::Float64,x1::Float64,D::Float64,k_ia::Float64,
     end
     return k_ia*a^k_ib*I0^k_ic*(x1/D)^k_id;
 end
-# Effective turbulence intensity
+
+# Effective turbulence intensity for one OP
 function eff_I(I0::Float64,I_f::Float64)
-    return sqrt(I_f^2 + I_0^2);
+    return sqrt(sum(I_f.^2) + I_0^2);
 end
 
 # Calculate crosswind step
@@ -94,15 +95,9 @@ function speedAtLocation(args)
     body
 end
 
-function ambientTurbulenceAtLocation(args)
+function ambientTurbulenceAtLocation(Ct,I_f,I0,x1,D,FConst)
     # Return turbulence level at a given location, meant for rotor plane
-    I_f = I_f(Ct,I0,x1,D,
-                FConst.k_ia,
-                FConst.k_ib,
-                FConst.k_ic,
-                FConst.k_id);
     I   = eff_I(I0,I_f);
-
-    body
+    return I
 end
 end  # module GaussianWake

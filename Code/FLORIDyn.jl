@@ -43,9 +43,23 @@ function FLORIDyn(e,sim,con)
         #   Reduction
         # TODO
         #   Foreign reduction
+        #  OPs at the rotorplane have to find their closest neighbours in
+        #  foreign wakes tyo calculate the interaction
         #       Idea: use first chain (center) to get rough index where to look
         #       look for closest OPs
-        #   LAST THING TO IMPLEMENT
+        # Step 1: Determine relevant turbines
+
+        # Step 2: Determine clostest OP
+
+        # Step 3: Calculate influence in foreign wake coordinates
+        #   Speed reduction
+
+        #   Added turbulence
+        I_f = I_f(Ct,I0,x1,D,
+                    FConst.k_ia,
+                    FConst.k_ib,
+                    FConst.k_ic,
+                    FConst.k_id);
         # TODO
         # Correction with EnKF
         #   use current data to correct states (u, φ, i)
@@ -53,15 +67,27 @@ function FLORIDyn(e,sim,con)
         # Calculate output variables
         # P / effective wind speed
         # TODO
+
         # ==================================================================== #
         #                  PREDICTION FOR THE FOLLOWING TIMESTEP               #
-
         for t ∈ e.turb
+            # Update and overwrite
             # Go through all OPs backwards and overwrite the following entry
             for i_c ∈ 1:size(t.op_x,2), i_op ∈ size(t.op_x,1)-1:-1:1
                 # Update of the wake coordinates
                 Δx1 = sim.Δt*t.op_u[i_op,i_c];
-                Δy1, Δz = crosswindstep(Δx1,x1,y1,z,Ct,γ,I0,ν_y,ν_z,D,w,e.constants.FLORIS);
+                Δy1, Δz = crosswindstep(Δx1,
+                                        t.op_x1[i_op,i_c],
+                                        t.op_y1[i_op,i_c],
+                                        t.op_z[i_op,i_c],
+                                        t.Ct[i_op],
+                                        t.γ[i_op],
+                                        t.I[i_op],
+                                        e.constants.c_νy[i_c],
+                                        e.constants.c_νz[i_c],
+                                        e.constants.t_D[t.ttype],
+                                        e.constants.c_w[i_c],
+                                        e.constants.FLORIS);
 
                 # Update and shift of the world coordinates
                 t.op_x[i_op + 1,i_c] = t.op_x[i_op,i_c] +
