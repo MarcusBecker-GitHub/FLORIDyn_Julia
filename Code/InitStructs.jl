@@ -70,6 +70,7 @@ function InitEnsemble(layout,nC,nOP)
                 zeros(nOP), # γ
                 zeros(1),   # Cp
                 zeros(nOP), # I
+                zeros(1),   # Mean φ
                 zeros(nOP,nC), # op_x
                 zeros(nOP,nC), # op_y
                 zeros(nOP,nC), # op_z

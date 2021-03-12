@@ -37,6 +37,7 @@ struct Turbine
     γ   # yaw angle
     Cp  # Power coefficient
     I   # (effective) Ambient turbulence
+    ϕ   # Mean wind direction 
 
     # OBSERVATION POINTS
     # World coordinates

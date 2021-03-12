@@ -40,18 +40,13 @@ end
 
 function FLORIDyn(e,sim,con)
     for k ∈ 1:sim.nt
-        # Calculate variables based on non-correcting states (x,y,z,dw,CT,γ)
-        #   Wake shape
-        # TODO
-        #   Reduction
-        # TODO
         #   Foreign reduction
         #  OPs at the rotorplane have to find their closest neighbours in
         #  foreign wakes tyo calculate the interaction
         #       Idea: use first chain (center) to get rough index where to look
         #       look for closest OPs
         # Step 1: Determine relevant turbines
-
+        rT = getRelevantTurbines(e.turb,ϕ);
         # Step 2: Determine clostest OP
 
         # Step 3: Calculate influence in foreign wake coordinates
@@ -126,6 +121,7 @@ function FLORIDyn(e,sim,con)
         # TODO
     end
     print("Simulation done.")
+    return 1
 end
 
 FLORIDyn(e,sim,con);

@@ -2,7 +2,12 @@
 module FLORIDyn_UtilityFunctions
 export circleshift!
 
+function getRelevantTurbines(t,ϕ)
+    # Sets all relevant turbines to TRUE
+    relevant = falses(length(t),length(t));
 
+    return relevant
+end
 # TODO Should be replaced by a version which only shifts down and does not
 # Schange the first entry
 function circleshift!(a::AbstractVector, shift::Integer)
