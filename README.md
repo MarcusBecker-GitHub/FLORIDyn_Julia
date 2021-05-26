@@ -1,3 +1,4 @@
+# This repository is NOT up to date, the new development will be published soon.
 # FLORIDyn_Julia
  FLORIDyn implementation in the Julia language
 
